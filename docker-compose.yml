@@ -1,0 +1,65 @@
+version: "3"
+
+networks:
+  course-platform:
+    external: true
+
+services:
+  
+  nginx:
+    image: nginx-proxy
+    build:
+      context: .
+      dockerfile: nginx.Dockerfile
+    container_name: nginx
+    ports:
+      - "80:80"
+    networks:
+      - course-platform
+
+  seq:
+    container_name: seq
+    image: datalust/seq
+    ports:
+      - "50505:80"
+    volumes:
+      - /home/actions/masters/seq:/data
+    environment:
+      ACCEPT_EULA: "Y"
+      SEQ_API_CANONICALURI: "https://birdegop.ru:50505"
+    networks: 
+      - course-platform
+  
+  prometheus:
+    container_name: prometheus
+    build:
+      context: .
+      dockerfile: Prometheus.Dockerfile
+    user: root
+    volumes:
+      - /home/actions/course-platform/prometheus:/prometheus
+#      - /home/actions/masters/prometheus.yml:/etc/prometheus/prometheus.yml
+#      - /home/actions/masters/prometheus.web.yml:/etc/prometheus/prometheus.web.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus/data'
+      - '--web.config.file=/etc/prometheus/prometheus.web.yml'
+    ports:
+      - "55055:9090"
+    networks:
+      - course-platform
+  
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    user: root
+    volumes:
+      - /home/actions/course-platform/grafana:/var/lib/grafana
+    environment:
+      GF_SERVER_ROOT_URL: http://localhost:3000
+    ports:
+      - "50555:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - course-platform

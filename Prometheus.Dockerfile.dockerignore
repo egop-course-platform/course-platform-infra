@@ -1,0 +1,7 @@
+.git
+.github
+.idea
+.gitignore
+nginx*
+docker-compose.yml
+prometheus.web.yml

@@ -1,0 +1,31 @@
+name: Deploy egop runner
+
+on:
+  push:
+    branches: [ "master", "develop" ]
+
+jobs:
+  
+#  prepare-environment:
+#    runs-on: self-hosted
+#    steps:
+#      - name: Stop and remove containers, networks
+#        run: docker compose down
+#      - name: Remove unused data
+#        run: docker system prune -a -f
+        
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v3
+      - name: create prometheus auth yml
+        env:
+          prometheus_auth: ${{ secrets.PROMETHEUS_AUTH }}
+        run: | 
+          echo 'basic_auth_users:' > prometheus.web.yml
+          echo "  admin: \"$prometheus_auth\"" >> prometheus.web.yml 
+      - name: create network
+        run: docker network create -d bridge course-platform || true
+      - name: docker compose
+        run: docker compose -f docker-compose.yml up --build --detach
