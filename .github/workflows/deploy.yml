@@ -17,8 +17,6 @@ jobs:
         run: | 
           echo 'basic_auth_users:' > prometheus.web.yml
           echo "  admin: \"${PROMETHEUS_AUTH}\"" >> prometheus.web.yml
-      - name: dump prom
-        run: cat prometheus.web.yml
       - name: create network
         run: docker network create -d bridge course-platform || true
       - name: docker compose
