@@ -4,4 +4,3 @@
 .gitignore
 nginx*
 docker-compose.yml
-prometheus.web.yml
