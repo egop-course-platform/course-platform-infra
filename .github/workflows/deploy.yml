@@ -13,10 +13,12 @@ jobs:
         uses: actions/checkout@v3
       - name: create prometheus auth yml
         env:
-          prometheus_auth: ${{ secrets.PROMETHEUS_AUTH }}
+          PROMETHEUS_AUTH: ${{ secrets.PROMETHEUS_AUTH }}
         run: | 
           echo 'basic_auth_users:' > prometheus.web.yml
-          echo "  admin: \"$prometheus_auth\"" >> prometheus.web.yml 
+          echo '  admin: "$PROMETHEUS_AUTH"' >> prometheus.web.yml 
+      - name: dump prom
+        run: cat prometheus.web.yml
       - name: create network
         run: docker network create -d bridge course-platform || true
       - name: docker compose
