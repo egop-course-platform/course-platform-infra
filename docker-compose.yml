@@ -91,3 +91,5 @@ services:
     links:
       - postgres
       - prometheus
+    networks:
+      - course-platform
