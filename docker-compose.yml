@@ -116,6 +116,7 @@ services:
 
   akhq:
     image: tchiotludo/akhq
+    container_name: akhq
     environment:
       AKHQ_CONFIGURATION: |
         akhq:
