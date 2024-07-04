@@ -29,7 +29,7 @@ jobs:
           echo "      POSTGRES_PASSWORD: \"${POSTGRES_PASSWORD}\"" >> docker-compose.override.yml
           echo '  postgres-exporter:' >> docker-compose.override.yml
           echo '    environment:' >> docker-compose.override.yml
-          echo "      DATA_SOURCE_NAME: \"postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/?sslmode=disable" >> docker-compose.override.yml
+          echo "      DATA_SOURCE_NAME: \"postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/?sslmode=disable\"" >> docker-compose.override.yml
       - name: verify overrides
         run: cat docker-compose.override.yml
       - name: create network
