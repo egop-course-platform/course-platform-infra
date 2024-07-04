@@ -17,6 +17,21 @@ jobs:
         run: | 
           echo 'basic_auth_users:' > prometheus.web.yml
           echo "  admin: \"${PROMETHEUS_AUTH}\"" >> prometheus.web.yml
+      - name: create postgres auth yml
+        env:
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        run: |
+          echo 'services:' > docker-compose.override.yml
+          echo '  postgres:' >> docker-compose.override.yml
+          echo '    environment:' >> docker-compose.override.yml
+          echo "      POSTGRES_USER: \"${POSTGRES_USER}\"" >> docker-compose.override.yml
+          echo "      POSTGRES_PASSWORD: \"${POSTGRES_PASSWORD}\"" >> docker-compose.override.yml
+          echo '  postgres-exporter:' >> docker-compose.override.yml
+          echo '    environment:' >> docker-compose.override.yml
+          echo "      DATA_SOURCE_NAME: \"postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/?sslmode=disable" >> docker-compose.override.yml
+      - name: verify overrides
+        run: cat docker-compose.override.yml
       - name: create network
         run: docker network create -d bridge course-platform || true
       - name: docker compose

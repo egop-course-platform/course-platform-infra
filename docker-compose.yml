@@ -61,3 +61,33 @@ services:
       - prometheus
     networks:
       - course-platform
+
+  postgres:
+    image: postgres
+    container_name: postgres
+    environment:
+      # Don't worry, these are overriden by github runner
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "root"
+    volumes:
+      - /home/actions/course-platform/pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+    ports:
+      - "5432:5432"
+    networks: 
+      - course-platform
+  
+  postgres-exporter:
+    image: prometheuscommunity/postgres-exporter
+    container_name: postgres-metrics-exporter
+    environment:
+      # Don't worry, these are overriden by github runner
+      DATA_SOURCE_NAME: "postgresql://postgres:root@postgres:5432/?sslmode=disable"
+    links:
+      - postgres
+      - prometheus
