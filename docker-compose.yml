@@ -124,6 +124,9 @@ services:
             course-platform:
               properties:
                 bootstrap.servers: "kafka:9092"
+        micronaut:
+          server:
+            context-path: "/kafka"
     restart: unless-stopped
     networks:
       - course-platform
