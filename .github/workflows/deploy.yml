@@ -35,4 +35,4 @@ jobs:
       - name: create network
         run: docker network create -d bridge course-platform || true
       - name: docker compose
-        run: docker compose -f docker-compose.yml up --build --detach
+        run: docker compose -f docker-compose.yml -f docker-compose.override.yml up --build --detach
