@@ -1,4 +1,4 @@
-name: Deploy egop runner
+name: Deploy to birdegop.ru
 
 on:
   push:
