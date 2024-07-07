@@ -26,7 +26,7 @@ services:
       - /home/actions/masters/seq:/data
     environment:
       ACCEPT_EULA: "Y"
-      SEQ_API_CANONICALURI: "https://birdegop.ru:50505"
+      SEQ_API_CANONICALURI: "https://birdegop.ru/logs"
     networks: 
       - course-platform
   
