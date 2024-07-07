@@ -111,6 +111,8 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
     restart: unless-stopped
+    volumes:
+      - /home/actions/course-platform/kafka:/kafka
     ports:
       - "9092:9094"
     networks:
