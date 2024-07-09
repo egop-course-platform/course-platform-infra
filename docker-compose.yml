@@ -110,7 +110,7 @@ services:
   
   postgres-exporter:
     image: prometheuscommunity/postgres-exporter
-    container_name: postgres-metrics-exporter
+    container_name: postgres-exporter
     environment:
       # Don't worry, these are overriden by github runner
       DATA_SOURCE_NAME: "postgresql://postgres:root@postgres:5432/?sslmode=disable"
@@ -205,3 +205,19 @@ services:
       - course-platform
     depends_on:
       - kafka
+  
+  node-exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    container_name: node-exporter
+    command:
+      - '--path.rootfs=/host'
+    network_mode: host
+    pid: host
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: "20M"
+    volumes:
+      - '/:/host:ro,rslave'
