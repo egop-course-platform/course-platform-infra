@@ -14,6 +14,7 @@ services:
     container_name: nginx
     ports:
       - "80:80"
+    restart: unless-stopped
     networks:
       - course-platform
 
@@ -27,6 +28,7 @@ services:
     environment:
       ACCEPT_EULA: "Y"
       SEQ_API_CANONICALURI: "https://birdegop.ru/logs"
+    restart: unless-stopped
     networks: 
       - course-platform
   
@@ -44,6 +46,7 @@ services:
       - '--web.config.file=/etc/prometheus/prometheus.web.yml'
     ports:
       - "55055:9090"
+    restart: unless-stopped
     networks:
       - course-platform
   
@@ -57,6 +60,7 @@ services:
       GF_SERVER_ROOT_URL: http://localhost:3000
     ports:
       - "50555:3000"
+    restart: unless-stopped
     depends_on:
       - prometheus
     networks:
@@ -76,7 +80,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    restart: always
+    restart: unless-stopped
     ports:
       - "5432:5432"
     networks: 
@@ -88,7 +92,8 @@ services:
     environment:
       # Don't worry, these are overriden by github runner
       DATA_SOURCE_NAME: "postgresql://postgres:root@postgres:5432/?sslmode=disable"
-    links:
+    restart: unless-stopped
+    depends_on:
       - postgres
       - prometheus
     networks:
@@ -135,6 +140,19 @@ services:
         micronaut:
           server:
             context-path: "/kafka"
+    restart: unless-stopped
+    networks:
+      - course-platform
+    depends_on:
+      - kafka
+
+  kafka-ui:
+    container_name: kafka-ui
+    image: provectuslabs/kafka-ui:latest
+    environment:
+      KAFKA_CLUSTERS_0_NAME: kafka-in-docker
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+      SERVER_SERVLET_CONTEXT_PATH: /kafka2
     restart: unless-stopped
     networks:
       - course-platform
