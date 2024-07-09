@@ -72,8 +72,6 @@ services:
       - /home/actions/course-platform/grafana:/var/lib/grafana
     environment:
       GF_SERVER_ROOT_URL: http://localhost:3000
-    ports:
-      - "50555:3000"
     restart: unless-stopped
     deploy:
       resources:
@@ -117,6 +115,11 @@ services:
       # Don't worry, these are overriden by github runner
       DATA_SOURCE_NAME: "postgresql://postgres:root@postgres:5432/?sslmode=disable"
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: "20M"
     depends_on:
       - postgres
       - prometheus
