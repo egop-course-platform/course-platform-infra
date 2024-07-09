@@ -54,7 +54,7 @@ services:
       - '--storage.tsdb.path=/prometheus/data'
       - '--web.config.file=/etc/prometheus/prometheus.web.yml'
       - '--web.external-url=/prometheus/'
-      - '--web.route-prefix=/prometheus/'
+      - '--web.route-prefix=/'
     restart: unless-stopped
     deploy:
       resources:
