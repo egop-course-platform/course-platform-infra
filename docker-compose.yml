@@ -15,6 +15,10 @@ services:
     ports:
       - "80:80"
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: "50M"
     networks:
       - course-platform
 
@@ -29,6 +33,11 @@ services:
       ACCEPT_EULA: "Y"
       SEQ_API_CANONICALURI: "https://birdegop.ru/logs"
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: "300M"
     networks: 
       - course-platform
   
@@ -47,6 +56,11 @@ services:
     ports:
       - "55055:9090"
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: "100M"
     networks:
       - course-platform
   
@@ -61,6 +75,11 @@ services:
     ports:
       - "50555:3000"
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: "100M"
     depends_on:
       - prometheus
     networks:
@@ -81,6 +100,11 @@ services:
       timeout: 5s
       retries: 5
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: "200M"
     ports:
       - "5432:5432"
     networks: 
@@ -103,6 +127,11 @@ services:
     image: wurstmeister/zookeeper
     container_name: zookeeper
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: "100M"
     networks:
       - course-platform
 
@@ -120,6 +149,11 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: "500M"
     volumes:
       - /home/actions/course-platform/kafka:/kafka
     ports:
@@ -141,6 +175,11 @@ services:
           server:
             context-path: "/kafka"
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: "300M"
     networks:
       - course-platform
     depends_on:
@@ -154,6 +193,11 @@ services:
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
       SERVER_SERVLET_CONTEXT_PATH: /kafka2
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: "300M"
     networks:
       - course-platform
     depends_on:
