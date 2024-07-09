@@ -29,7 +29,7 @@ jobs:
           echo "      POSTGRES_PASSWORD: \"${POSTGRES_PASSWORD}\"" >> docker-compose.override.yml
           echo '  postgres-exporter:' >> docker-compose.override.yml
           echo '    environment:' >> docker-compose.override.yml
-          echo "      DATA_SOURCE_NAME: \"postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/?sslmode=disable\"" >> docker-compose.override.yml
+          echo "      DATA_SOURCE_NAME: \"postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/postgres?sslmode=disable\"" >> docker-compose.override.yml
           echo '  grafana:' >> docker-compose.override.yml
           echo '    environment:' >> docker-compose.override.yml
           echo '      GF_SERVER_ROOT_URL: https://birdegop.ru/grafana' >> docker-compose.override.yml
