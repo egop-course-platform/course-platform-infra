@@ -240,6 +240,6 @@ services:
       resources:
         limits:
           cpus: "0.1"
-          memory: "20M"
+          memory: "50M"
     networks:
       - course-platform
