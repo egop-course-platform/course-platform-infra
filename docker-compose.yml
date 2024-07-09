@@ -60,7 +60,7 @@ services:
       resources:
         limits:
           cpus: "1.0"
-          memory: "100M"
+          memory: "150M"
     networks:
       - course-platform
   
@@ -77,7 +77,7 @@ services:
       resources:
         limits:
           cpus: "1.0"
-          memory: "100M"
+          memory: "150M"
     depends_on:
       - prometheus
     networks:
@@ -134,7 +134,7 @@ services:
       resources:
         limits:
           cpus: "1.0"
-          memory: "100M"
+          memory: "150M"
     networks:
       - course-platform
 
@@ -223,7 +223,7 @@ services:
       - '/:/host:ro,rslave'
   
   cadvisor:
-    image: gcr.io/cadvisor/cadvisor
+    image: google/cadvisor
     restart: unless-stopped
     container_name: cadvisor
     privileged: true
