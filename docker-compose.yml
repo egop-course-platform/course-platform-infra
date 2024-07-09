@@ -221,3 +221,19 @@ services:
       - course-platform
     volumes:
       - '/:/host:ro,rslave'
+  
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    deploy:
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: "20M"
+    networks:
+      - course-platform
