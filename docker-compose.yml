@@ -211,13 +211,13 @@ services:
     container_name: node-exporter
     command:
       - '--path.rootfs=/host'
-    network_mode: host
-    pid: host
     restart: unless-stopped
     deploy:
       resources:
         limits:
           cpus: "0.1"
           memory: "20M"
+    networks:
+      - course-platform
     volumes:
       - '/:/host:ro,rslave'
