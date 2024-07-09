@@ -223,7 +223,7 @@ services:
       - '/:/host:ro,rslave'
   
   cadvisor:
-    image: google/cadvisor
+    image: gcr.io/cadvisor/cadvisor
     restart: unless-stopped
     container_name: cadvisor
     privileged: true
@@ -233,7 +233,7 @@ services:
       - "8080:8080"
     volumes:
       - /:/rootfs:ro
-      - /var/run:/var/run:rw
+      - /var/run:/var/run:ro
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
       - /dev/disk/:/dev/disk:ro
