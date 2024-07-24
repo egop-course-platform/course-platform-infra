@@ -148,7 +148,8 @@ services:
     container_name: zookeeper
     restart: unless-stopped
     healthcheck:
-      test: ['echo "ruok" | nc -w 2 -q 2 localhost 2181 | grep imok1 || echo 1']
+      # echo command "ruok" into zookeper port, then grep for "imok" in response, othewise exit with code 1
+      test: echo "ruok" | nc -w 2 -q 2 localhost 2181 | grep imok || exit 1
       interval: 10s
       timeout: 30s
       retries: 3
