@@ -6,6 +6,20 @@ networks:
 
 services:
   
+  autoheal:
+    environment:
+      AUTOHEAL_CONTAINER_LABEL: autoheal
+    deploy:
+      resources:
+        limits:
+          memory: "50M"
+    image: willfarrell/autoheal:latest
+    network_mode: none
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+  
   nginx:
     image: nginx-proxy
     build:
@@ -97,6 +111,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    labels:
+      autoheal: true
     restart: unless-stopped
     deploy:
       resources:
@@ -157,8 +173,18 @@ services:
         limits:
           cpus: "1.0"
           memory: "500M"
+    healthcheck:
+      test: /opt/kafka/bin/kafka-cluster.sh cluster-id --bootstrap-server localhost:9092 || exit 1
+      interval: 1m
+      timeout: 30s
+      retries: 3
+    labels:
+      autoheal: true
     volumes:
       - /home/actions/course-platform/kafka:/kafka
+    depends_on: 
+      zookeeper:
+        condition: service_healthy
     ports:
       - "9094:9094"
     networks:
@@ -177,6 +203,13 @@ services:
         micronaut:
           server:
             context-path: "/kafka"
+    healthcheck:
+      test: curl --fail http://localhost:28081/kafka/health || exit 1
+      interval: 1m
+      timeout: 30s
+      retries: 3
+    labels:
+      autoheal: true
     restart: unless-stopped
     deploy:
       resources:
